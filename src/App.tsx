@@ -32,12 +32,15 @@ function App() {
   const [openChart, setOpenChart] = useState(false);
   const [page, setPage] = useState(1);
 
+  // New state for monthly withdrawals in the lump sum case
+  const [withdrawalAmount, setWithdrawalAmount] = useState("");
+
   const calculateTotal = () => {
-    var monthly_investment: number = +formData.monthly_investment;
-    var period: number = +formData.period;
-    var expected_return: number = +formData.return;
-    var investment_amount: number = 0;
-    var total: number = 0;
+    var monthly_investment = +formData.monthly_investment;
+    var period = +formData.period;
+    var expected_return = +formData.return;
+    var investment_amount = 0;
+    var total = 0;
     var invested_graph = [];
     var expected_graph = [];
 
@@ -116,20 +119,22 @@ function App() {
 
   // Lump
   const calculateTotalLump = () => {
-    var investment: number = +formDataLump.investment;
-    var period: number = +formDataLump.period;
-    var expected_return: number = +formDataLump.return;
+    var investment = +formDataLump.investment;
+    var period = +formDataLump.period;
+    var expected_return = +formDataLump.return;
     var expected_graph = [];
-    var initialInvestment: number = +formDataLump.investment;
+    var initialInvestment = +formDataLump.investment;
+    var monthlyWithdrawal = +withdrawalAmount; // New: Get monthly withdrawal amount
     expected_graph.push(investment);
 
     for (var year = 1; year <= period; year++) {
+      // Deduct monthly withdrawal from the investment amount
+      investment = investment - monthlyWithdrawal;
       investment = investment + Math.round((investment / 100) * expected_return);
       expected_graph.push(investment);
     }
 
-    console.log(expected_graph);
-    var wealthGain = (investment) - initialInvestment;
+    var wealthGain = investment - initialInvestment;
     setInvestedAmount(initialInvestment);
     setTotalAmount(investment);
     setChartData({
@@ -146,6 +151,7 @@ function App() {
     });
     setcompoundedDataLump(expected_graph);
   }
+
   return (
     <div className={classes.Container}>
       <Card className={classes.root} variant="outlined">
@@ -153,7 +159,7 @@ function App() {
           <Button onClick={openSIP}>SIP</Button>
           <Button onClick={openLump}>LumpSum</Button>
         </div>
-        {page ?
+        {page ? (
           <CardContent>
             <FormControl className={classes.Box}>
               <InputLabel htmlFor="my-input">Monthly Investment Amount (Rs)</InputLabel>
@@ -170,12 +176,10 @@ function App() {
               <Input id="my-input" aria-describedby="my-helper-text" onChange={(e) => setFormData({ ...formData, return: e.target.value })} value={formData.return} />
             </FormControl>
 
-            <Button className={classes.Button} variant="outlined" color="primary" fullWidth
-              onClick={calculateTotal}> Calculate </Button>
-            <Box className={classes.Total}>Total: ₹ {totalAmount} <br />
-              Invested Amount: ₹ {investedAmount}</Box>
-          </CardContent> :
-          // LUMP SUM
+            <Button className={classes.Button} variant="outlined" color="primary" fullWidth onClick={calculateTotal}> Calculate </Button>
+            <Box className={classes.Total}>Total: ₹ {totalAmount} <br /> Invested Amount: ₹ {investedAmount}</Box>
+          </CardContent>
+        ) :
           <CardContent>
             <FormControl className={classes.Box}>
               <InputLabel htmlFor="my-input">Investment Amount (Rs)</InputLabel>
@@ -191,13 +195,22 @@ function App() {
               <InputLabel htmlFor="my-input">Expected Return (%)</InputLabel>
               <Input id="my-input" aria-describedby="my-helper-text" onChange={(e) => setFormDataLump({ ...formDataLump, return: e.target.value })} value={formDataLump.return} />
             </FormControl>
+            <FormControl className={classes.Box}>
+            <InputLabel htmlFor="my-input">Monthly Withdrawal Amount (Rs)</InputLabel>
+            <Input
+              id="my-input"
+              aria-describedby="my-helper-text"
+              onChange={(e) => setWithdrawalAmount(e.target.value)}
+              value={withdrawalAmount}
+            />
+            </FormControl>
 
             <Button className={classes.Button} variant="outlined" color="primary" fullWidth
               onClick={calculateTotalLump}> Calculate </Button>
             <Box className={classes.Total}>Total: ₹ {totalAmount} <br />
               Invested Amount: ₹ {investedAmount}</Box>
           </CardContent>
-        }
+        } 
 
         <Button className={classes.graph_button} onClick={open_chart}>{openChart ? `HideChart` : `Show in Chart`}</Button>
         <Doughnut className={classes.piechart} data={chartData} options={options} />
