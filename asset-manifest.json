@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/calculate-roi/static/css/main.0df59b4e.css",
+    "main.js": "/calculate-roi/static/js/main.bccc230e.js",
+    "static/js/787.ae397488.chunk.js": "/calculate-roi/static/js/787.ae397488.chunk.js",
+    "static/media/money.png": "/calculate-roi/static/media/money.9eedd35ce38ed09927fa.png",
+    "index.html": "/calculate-roi/index.html",
+    "main.0df59b4e.css.map": "/calculate-roi/static/css/main.0df59b4e.css.map",
+    "main.bccc230e.js.map": "/calculate-roi/static/js/main.bccc230e.js.map",
+    "787.ae397488.chunk.js.map": "/calculate-roi/static/js/787.ae397488.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0df59b4e.css",
+    "static/js/main.bccc230e.js"
+  ]
+}
