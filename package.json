@@ -1,6 +1,7 @@
 {
   "name": "mf",
   "version": "0.1.0",
+  "homepage": "https://wiyuga.github.io/calculate-roi",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
@@ -8,17 +9,20 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "chart.js": "^3.5.1",
+    "gh-pages": "^6.0.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.4",
     "react-dom": "^17.0.2",
     "react-minimal-pie-chart": "^8.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "recharts": "^2.1.2",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
